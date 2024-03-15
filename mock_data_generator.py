@@ -24,7 +24,7 @@ def generate_airbnb_booking():
     ]
 
     start_date = datetime.date(2023, 11, 30)
-    end_date = datetime.date(2024, 03, 31)
+    end_date = datetime.date(2024, 3, 31)
     booking_date = start_date + datetime.timedelta(days=random.randint(0, (end_date - start_date).days))
     duration = datetime.timedelta(days=random.randint(1, 14))
 
