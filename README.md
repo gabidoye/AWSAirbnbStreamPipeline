@@ -13,26 +13,12 @@ A basic understanding of AWS services such as Lambda, SQS, S3, CodeBuild, and Ev
 Familiarity with the AWS CLI or Management Console.
 Knowledge of Python programming, particularly for writing Lambda functions.
 Architecture
-This project is structured into several key components, each fulfilling a specific role in the data processing workflow:
-
-### Part 1: SQS Queue Setup with DLQ
-AirbnbBookingQueue: An SQS Standard Queue to receive incoming mock Airbnb booking data.
-AirbnbBookingDLQ: A Dead Letter Queue configured to capture messages from AirbnbBookingQueue after 3 unsuccessful delivery attempts, ensuring no data is lost unintentionally.
-
-### Part 2: Producer Lambda Function
-ProduceAirbnbBookingData: A Lambda function responsible for generating and publishing mock Airbnb booking data to the AirbnbBookingQueue.
-
-### Part 3: EventBridge Integration
-An EventBridge rule to consume messages from AirbnbBookingQueue and filter out messages based on specific criteria, such as booking duration exceeding one day.
-
-### Part 4: Consumer Lambda Function
-ProcessFilteredBookings: A Lambda function triggered by the EventBridge rule to process and store filtered booking records in an S3 bucket named airbnb-booking-records.
-
-### Part 5: CI/CD with AWS CodeBuild
-Setup a CodeBuild project linked to your GitHub repository to automate the deployment of updates to your Lambda functions, ensuring a smooth development workflow.
+This project is structured into several key components, each fulfilling a specific role in the data processing workflow.
 
 ## Architecture Overview:
 The AirBnB Stream Data Ingestion system is designed to automate the process of ingesting, processing, and storing Airbnb booking data. It employs a sequence of AWS services that work together to handle data flow, transformation, and storage.
+
+<img width="562" alt="image" src="https://github.com/gabidoye/AWSAirbnbStreamPipeline/assets/86935340/bff6ff57-72c2-460a-b695-bf903bf29a15">
 
 
 ## Process Flow:
@@ -41,10 +27,10 @@ The AirBnB Stream Data Ingestion system is designed to automate the process of i
 This is the starting point of the pipeline, where the Producer Lambda function generates or receives Airbnb booking data.
 The generated data is then sent to an Amazon SQS queue for temporary storage and queuing. This allows for decoupling of data production and consumption, providing a buffer that handles incoming data at scale.
 
-#### Amazon SQS (Simple Queue Service):
+#### Amazon SQS (Simple Queue Service) with DLQ:
 
 The SQS service acts as a message queuing system that temporarily stores the booking data pushed by the Producer.
-It ensures that the messages are securely held until they can be processed, handling any fluctuations in load and preventing data loss.
+It ensures that the messages are securely held until they can be processed, handling any fluctuations in load and preventing data loss.A Dead Letter Queue configured to capture messages from AirbnbBookingQueue after 3 unsuccessful delivery attempts, ensuring no data is lost unintentionally.
 
 #### Amazon EventBridge:
 
