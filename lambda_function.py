@@ -90,8 +90,9 @@ def lambda_handler(event, context):
         filtered_json_bytes = filtered_json.encode('utf-8')
 
         # Create a file name with the current date and upload the JSON to S3
-        current_date = datetime.now().strftime("%Y-%m-%d")
+        current_date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         target_file_key = f'filtered_records_{current_date}.json'
+
         s3_client.put_object(Bucket=target_bucket_name, Key=target_file_key, Body=filtered_json_bytes)
         print(f"Filtered records written to {target_bucket_name}/{target_file_key}")
 
